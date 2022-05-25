@@ -82,3 +82,15 @@ margin-top: 20px;
     background-color: gainsboro;
     text-align: center;
 }
+
+#navMenu{
+    margin-left: 40%;
+    background-color: grey;
+    width: 22%;
+    
+}
+
+#navItem{
+    background-color: lightgray;
+    border: solid 1px;
+}

@@ -7,6 +7,7 @@
 </head>
 <body>
 <?php
+session_start();
 include "./../php/partials/cap.partial.php";
 echo '<h3 id="titol">Visitant:: En construcció</h3>';
 echo '<div id="main">';
@@ -18,11 +19,11 @@ echo '</div>';
 
 echo '</div>';
 
-if (session_status() == PHP_SESSION_ACTIVE) {
+if (isset($_SESSION["usuari"])) {
     include "./../php/partials/benvinguda.partial.php";
-    echo '<div id="titol"><a href="../index.php">Torna a l&#39;inici</a></div>';
+    
 }
-
+echo '<div id="titol"><a href="../index.php">Torna a l&#39;inici</a></div>';
 include "./../php/partials/peu.partial.php";
 
 

@@ -18,7 +18,7 @@ if($rol == "ROL_ALUMNAT"){
 }else{
     $tipusUsuari="professorat";
 }
-
+$Error="";
 ?>
 
 <!DOCTYPE html>
@@ -39,26 +39,57 @@ echo '<div id="main">';
     include "./partials/benvinguda.partial.php";
     echo '<div id="formulariLogin">';
 
-        echo '<ul>';
+    if(isset($_GET['modificarUsuari'])){
+        include "./partials/modificaUsuari.partial.php";
+        echo '<div id="titol"><a href="../php/usuariRegistrat.php">Cancel·la</a></div><br>';
+    }elseif(isset($_GET['modificarContrasenya'])){
+        include "./partials/modificaContrasenya.partial.php";
+        echo '<div id="titol"><a href="../php/usuariRegistrat.php">Cancel·la</a></div><br>';
+    }elseif(isset($_GET['errorCorrecta'])){
+        $Error="La contrasenya no es correcta";
+        include "./partials/modificaContrasenya.partial.php";
+        echo '<div id="titol"><a href="../php/usuariRegistrat.php">Cancel·la</a></div><br>';
+        
+    }elseif(isset($_GET['errorCoincidir'])){
+        $Error="Les contrasenyes han de coincidir";
+        include "./partials/modificaContrasenya.partial.php";
+        echo '<div id="titol"><a href="../php/usuariRegistrat.php">Cancel·la</a></div><br>';
+        
+    }else{
+        include "./partials/dadesUsuari.partial.php";
+        echo '<div id="titol"><a href="../php/usuariRegistrat.php?modificarUsuari">Modifica les teues dades</a></div><br>';
+        echo '<div id="titol"><a href="../php/usuariRegistrat.php?mostrarLog">Visualitzar Log</a></div><br>';
+    } 
 
-            $sql= "SELECT * FROM $tipusUsuari WHERE email LIKE '$user'";
-            $resultat= mysqli_query($connexio,$sql);
-            while ($row = mysqli_fetch_assoc($resultat)){
-                echo '<li>Nom: '.$row["nom"].'</li>';
-                echo '<li>Cognoms: '.$row["cognoms"].'</li>';
-                echo '<li>Poblacio: '.$row["poblacio"].'</li>';
-                echo '<li>email: '.$row["email"].'</li>';
-                echo '<li>Contrasenya: '.$row["contrasenya"].'</li>';
-                echo '<li>Rol: '.$row["rol"].'</li>';
-                echo '<li>Data: '.$row["data"].'</li>';
-            }
-        echo '</ul>';
+    //Baixa Usuari
+        echo '<form action="processaBaixaUsuari.php" method="post">';
+        
+        echo '<input type="text" id="email" name="email" value='.$user.' required hidden><br/>';
 
+        echo '<input type="text" id="rol" name="rol" value='.$rol.' required hidden><br/>';
+
+            echo '<input type="submit" value="Donat de Baixa" onclick="return confirm("Estas segur?");>';
+        echo '</form>';
+    
     echo '</div>';
-    echo '<div id="titol"><a href="../index.php">Torna a l&#39;inici</a></div>';
+    
+    echo '<div id="titol"><a href="../index.php?">Torna a l&#39;inici</a></div>';
+    if(isset($_GET['usuariModificat'])){
+        echo '<div id="titol"><p>Les teudes dades sl&#39;han canviat correctament</p></div>';
+    }
+
+    if(isset($_GET['contrasenyaModificada'])){
+        echo '<div id="titol"><p>La contrasenya sl&#39;ha canviat correctament</p></div>';
+    }
     echo '</div>';
 
 echo '</div>';
 include "./partials/peu.partial.php";
+
+if(isset($_GET['mostrarLog'])){
+    include "./partials/visualitzaLog.partial.php";
+    echo '<div id="titol"><a href="../php/usuariRegistrat.php">Oculta Log</a></div><br>';
+    
+}
 ?>
 </body>

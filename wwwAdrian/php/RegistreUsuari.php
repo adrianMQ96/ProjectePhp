@@ -25,8 +25,7 @@ switch ($parametre){
     case "emailprofessorat":
         $ErrorEmail="El professor ja existeix";
 }
-echo '<h1 id="titol">Projecte PHP Adrian</h1>';
-echo '<h3 id="titol">Login Usuari Registrat</h3>';
+include "./partials/cap.partial.php";
 echo '<div id="main">';
 
 echo '<div id="mainRegistre">';

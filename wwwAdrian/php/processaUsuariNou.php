@@ -70,16 +70,26 @@
     $ContrasenyaEncriptada= password_hash($ContrasenyaRegistre, PASSWORD_BCRYPT,$opcions)."\n";
     $ContrasenyaEncriptada= trim($ContrasenyaEncriptada);
     $Rol=0;
+    $TipusRol="";
     if ($Usuaris == "alumnat"){
         $Rol = 1;
+        $TipusRol="ROL_ALUMNAT";
     }else{
         $Rol = 2;
+        $TipusRol="ROL_PROFESSORAT";
     }
     $sqlInsert = "INSERT INTO $Usuaris(nom,cognoms,email,poblacio,contrasenya,rol,data)
     
     VALUES ('$Nom','$Cognoms','$Email','$Poblacio','$ContrasenyaEncriptada','$Rol',now())";
 
         if (mysqli_query($connexio, $sqlInsert)) {
+
+            $dia = date("Y")."/".date("n")."/".date("j");
+            $hora = date("G").":".date("i").":".date("s");
+            $fp = fopen("../log/registre.log","a");
+            fputs($fp, "Usuari Registrat: $Email - $TipusRol - Dia: $dia - Hora: $hora \n");
+            fclose($fp);
+
             $ultim_id = mysqli_insert_id($connexio);
             echo "Nou registre creat amb èxit. Últim id: ".$ultim_id;
         } else {

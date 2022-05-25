@@ -8,22 +8,27 @@
     <body>
         <?php
         include "./php/partials/cap.partial.php";
-        
+        $loged='';
+        if(isset($_GET['loged'])){
+            $loged = $_GET['loged'];
+        }
+        session_start();
         echo '<div id="main">';
 
         /* $parametre=false;
         if(isset($_GET['sessio'])){
             $parametre = $_GET['sessio'];
         }
-        if ($parametre){
+        if ($parametre){ $_SESSION["usuari"]
             session_start();
         } */
 
         echo '<div id="visitant">Visitant <br> <a href="php/visitant.php"><img src="img/visitant.png" width="95%" height="60%"></a></div>';
         echo '<div id="usuari">Usuari <br> <img src="img/users.png" width="75%" height="60%">';
         echo '<div id="login">';
-
-        if (session_status() == PHP_SESSION_ACTIVE) {
+        
+        if (isset($_SESSION["usuari"])) {
+            
             echo '<a href="php/usuariRegistrat.php">Usuari Registrat</a> - <a href="php/RegistreUsuari.php">Registrat</a>';
             
             

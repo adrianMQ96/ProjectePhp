@@ -13,15 +13,18 @@ if (!$connexio) {
 $Email = $_POST['email'];
 $ContrasenyaLogin = $_POST['contrasenya'];
 $TipusUsuari = $_POST['radioTipus'];
-
+$rol="";
+if($TipusUsuari == "alumnat"){
+    $rol = "ROL_ALUMNAT";
+}else{
+    $rol = "ROL_PROFESSORAT";
+}
 $sql1="SELECT * FROM $TipusUsuari WHERE email LIKE '$Email'";
 $resultat = mysqli_query($connexio, $sql1);
 
 if (mysqli_num_rows($resultat) > 0){
     $contrasenyaEncriptada='';
-    session_start([
-        'cookie_lifetime' => 86400,
-    ]);
+    session_start();
     
     /*session is started if you don't write this line can't use $_Session  global variable*/
 
@@ -33,6 +36,12 @@ if (mysqli_num_rows($resultat) > 0){
 
     $contrasenyaDes =password_verify($ContrasenyaLogin,$contrasenyaEncriptada);
     if ($contrasenyaDes){
+
+        $dia = date("Y")."/".date("n")."/".date("j");
+        $hora = date("G").":".date("i").":".date("s");
+        $fp = fopen("../log/registre.log","a");
+        fputs($fp, "Login: $Email - $rol - Dia: $dia - Hora: $hora \n");
+        fclose($fp);
 
         mysqli_close($connexio);
         header("Location: usuariRegistrat.php");
